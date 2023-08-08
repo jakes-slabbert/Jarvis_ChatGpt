@@ -6,9 +6,7 @@ or APIs credentials
 
 import os
 import whisper
-import pygame
 import Assistant.get_audio as myaudio
-import Assistant.tools
 import sys
 import time
 import openai

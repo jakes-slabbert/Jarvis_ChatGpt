@@ -70,23 +70,23 @@ def PaperSearchAndDownload(query):
     scholar.write_bib_file(csv_file=os.path.join(workspace_dir_name,'results','papers.csv'), bib_file=os.path.join(workspace_dir_name,'results','papers.bib'))
 
     # expand further with refy reccomendendation system
-    print('\n\n 3) Expanding with Refy reccomendendation system')
-    print('this might take a while...')
-    scholar.refy_reccomend(bib_path=os.path.join(workspace_dir_name,'results','papers.bib'))
+    # print('\n\n 3) Expanding with Refy reccomendendation system')
+    # print('this might take a while...')
+    # scholar.refy_reccomend(bib_path=os.path.join(workspace_dir_name,'results','papers.bib'))
 
-    with open(os.path.join(workspace_dir_name, 'refy_suggestions', 'test.csv'), 'r',encoding='utf-8') as fp:
-        csvfile = csv.DictReader(fp) 
-        for row in csvfile:
-            title = scholar.replace_non_alphanumeric(row['title'])
-            title = title.replace(" ","_")
+    # with open(os.path.join(workspace_dir_name, 'refy_suggestions', 'test.csv'), 'r',encoding='utf-8') as fp:
+    #     csvfile = csv.DictReader(fp) 
+    #     for row in csvfile:
+    #         title = scholar.replace_non_alphanumeric(row['title'])
+    #         title = title.replace(" ","_")
 
-            save_path = os.path.join(workspace_dir_name,'refy_suggestions',(title+'.pdf'))
-            try:
-                download_paper(url=row['url'], save_path=save_path)
-            except:
-                print(f'couldn t download {row}')
+    #         save_path = os.path.join(workspace_dir_name,'refy_suggestions',(title+'.pdf'))
+    #         try:
+    #             download_paper(url=row['url'], save_path=save_path)
+    #         except:
+    #             print(f'couldn t download {row}')
 
-    return f'{os.path.join(os.getcwd(), workspace_dir_name)}'
+    # return f'{os.path.join(os.getcwd(), workspace_dir_name)}'
 
 
 import urllib

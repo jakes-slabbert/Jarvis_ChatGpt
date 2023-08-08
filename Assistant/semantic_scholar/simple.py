@@ -10,21 +10,21 @@ from typing import Generator, Union
 import urllib3
 urllib3.disable_warnings()
 
-S2_API_KEY = os.environ['S2_API_KEY']
+# S2_API_KEY = os.environ['S2_API_KEY']
 
 
-def get_paper(session: Session, paper_id: str, fields: str = 'paperId,title', **kwargs) -> dict:
-    params = {
-        'fields': fields,
-        **kwargs,
-    }
-    headers = {
-        'x-api-key': S2_API_KEY,
-    }
+# def get_paper(session: Session, paper_id: str, fields: str = 'paperId,title', **kwargs) -> dict:
+#     params = {
+#         'fields': fields,
+#         **kwargs,
+#     }
+#     headers = {
+#         'x-api-key': S2_API_KEY,
+#     }
 
-    with session.get(f'https://api.semanticscholar.org/graph/v1/paper/{paper_id}', params=params, headers=headers) as response:
-        response.raise_for_status()
-        return response.json()
+#     with session.get(f'https://api.semanticscholar.org/graph/v1/paper/{paper_id}', params=params, headers=headers) as response:
+#         response.raise_for_status()
+#         return response.json()
 
 
 def download_pdf(session: Session, url: str, path: str, user_agent: str = 'requests/2.0.0'):
@@ -47,32 +47,32 @@ def download_pdf(session: Session, url: str, path: str, user_agent: str = 'reque
                 f.write(chunk)
 
 
-def download_paper(session: Session, paper_id: str, directory: str = 'papers', user_agent: str = 'requests/2.0.0') -> Union[str, None]:
-    try:
-        directory = os.environ['workspace']
-    except:
-        pass
+# def download_paper(session: Session, paper_id: str, directory: str = 'papers', user_agent: str = 'requests/2.0.0') -> Union[str, None]:
+#     try:
+#         directory = os.environ['workspace']
+#     except:
+#         pass
     
-    paper = get_paper(session, paper_id, fields='paperId,title,isOpenAccess,openAccessPdf')
+    # paper = get_paper(session, paper_id, fields='paperId,title,isOpenAccess,openAccessPdf')
 
     # check if the paper is open access
-    if not paper['isOpenAccess']:
-        return None
+    # if not paper['isOpenAccess']:
+    #     return None
 
-    paperId: str =re.sub(r'\W+', '', paper['title']).encode("utf-8").decode("utf-8")
-    pdf_url: str = paper['openAccessPdf']['url']
-    pdf_path = os.path.join(directory, f'{paperId}.pdf')
-    if os.path.isfile(pdf_path):
-        return None
+    # paperId: str =re.sub(r'\W+', '', paper['title']).encode("utf-8").decode("utf-8")
+    # pdf_url: str = paper['openAccessPdf']['url']
+    # pdf_path = os.path.join(directory, f'{paperId}.pdf')
+    # if os.path.isfile(pdf_path):
+    #     return None
 
-    # create the directory if it doesn't exist
-    os.makedirs(directory, exist_ok=True)
+    # # create the directory if it doesn't exist
+    # os.makedirs(directory, exist_ok=True)
 
-    # check if the pdf has already been downloaded
-    if not os.path.exists(pdf_path):
-        download_pdf(session, pdf_url, pdf_path, user_agent=user_agent)
+    # # check if the pdf has already been downloaded
+    # if not os.path.exists(pdf_path):
+    #     download_pdf(session, pdf_url, pdf_path, user_agent=user_agent)
 
-    return pdf_path
+    # return pdf_path
 
 
 def download_papers(paper_ids: list[str], directory: str = 'papers', user_agent: str = 'requests/2.0.0') -> Generator[tuple[str, Union[str, None, Exception]], None, None]:

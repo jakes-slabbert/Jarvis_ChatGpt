@@ -15,7 +15,7 @@ import urllib3
 import json
 urllib3.disable_warnings()
 
-import refy
+# import refy
 
 import pdftitle
 from langchain.document_loaders import OnlinePDFLoader
@@ -26,22 +26,22 @@ from pymed import PubMed
 from .simple import Main
 
 RESULT_LIMIT = 10
-S2_API_KEY = os.environ['S2_API_KEY']
+# S2_API_KEY = os.environ['S2_API_KEY']
 
 PAPER_FIELDS = 'paperId,externalIds,title,authors,year,abstract,isOpenAccess,openAccessPdf,influentialCitationCount,citationStyles,tldr,venue,journal'
 
-def get_paper(session: Session, paper_id: str, fields: str = 'paperId,title', **kwargs) -> dict:
-    params = {
-        'fields': fields,
-        **kwargs,
-    }
-    headers = {
-        'x-api-key': S2_API_KEY,
-    }
+# def get_paper(session: Session, paper_id: str, fields: str = 'paperId,title', **kwargs) -> dict:
+#     params = {
+#         'fields': fields,
+#         **kwargs,
+#     }
+#     headers = {
+#         'x-api-key': S2_API_KEY,
+#     }
 
-    with session.get(f'https://api.semanticscholar.org/graph/v1/paper/{paper_id}', params=params, headers=headers) as response:
-        response.raise_for_status()
-        return response.json()
+#     with session.get(f'https://api.semanticscholar.org/graph/v1/paper/{paper_id}', params=params, headers=headers) as response:
+#         response.raise_for_status()
+#         return response.json()
 
 
 
@@ -185,17 +185,17 @@ def chunks(items, chunk_size):
     return [items[i:i + chunk_size] for i in range(0, len(items), chunk_size)]
 
 
-def fetch_paper_batch(paperid: list):
-    req = {'ids': [f'{id}' for id in paperid]}
-    # https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/post_graph_get_papers
+# def fetch_paper_batch(paperid: list):
+#     req = {'ids': [f'{id}' for id in paperid]}
+#     # https://api.semanticscholar.org/api-docs/graph#tag/Paper-Data/operation/post_graph_get_papers
     
-    rsp = requests.post('https://api.semanticscholar.org/graph/v1/paper/batch',
-                        params={'fields': PAPER_FIELDS},
-                        json=req)
+#     rsp = requests.post('https://api.semanticscholar.org/graph/v1/paper/batch',
+#                         params={'fields': PAPER_FIELDS},
+#                         json=req)
     
-    if rsp.status_code != 200:
-        return f'Problem fetching {req}: ' + rsp.text
-    return rsp.json()
+#     if rsp.status_code != 200:
+#         return f'Problem fetching {req}: ' + rsp.text
+#     return rsp.json()
 
 
 def download_pdf_from_id(paperid, path=os.getcwd()):
@@ -350,13 +350,13 @@ def replace_non_alphanumeric(string, replacement=' '):
     return replaced_string
 
 
-def refy_reccomend(bib_path, number=20):
-    d = refy.Recomender(
-        bib_path,            # path to your .bib file
-        n_days=30,               # fetch preprints from the last N days
-        html_path=os.path.join(os.path.join(bib_path.replace('\\results\\papers.bib',''),'refy_suggestions'),"test.html"),   # save results to a .csv (Optional)
-        N=number                 # number of recomended papers 
-        )
+# def refy_reccomend(bib_path, number=20):
+#     d = refy.Recomender(
+#         bib_path,            # path to your .bib file
+#         n_days=30,               # fetch preprints from the last N days
+#         html_path=os.path.join(os.path.join(bib_path.replace('\\results\\papers.bib',''),'refy_suggestions'),"test.html"),   # save results to a .csv (Optional)
+#         N=number                 # number of recomended papers 
+#         )
 
 
 def write_to_pdf(text, dest):
